@@ -118,6 +118,138 @@ actions -> Image -> create image
 - launch
 ==================================
 
+=======
+Class2
+=======
+
+
+VPC- Virtual private cloud
+
+CIDR block range: 
+------------------ 
+172.31.0.0/25
+
+4 octets
+each octet of size 8 bits
+
+Total size = 4 * 8 =32
+
+let calculate 172.31.0.0/25
+----------------------------
+
+1. Netowrk- first 3 octets will 
+2. host portion
+
+Network portion = 25
+Host portion   = 32 - 25 = 7 ==> 2 ^ 7 = 128
+
+
+172.31.0 is fixed
+0 - 127 = 128 ips
+
+--------------------------- support till 128 ips/---------
+
+I need 200 + network
+
+CIDR block range: 
+------------------ 
+172.31.0.0/24
+
+network portio is := 24
+host portion       = 32 -24 = 8 --> 2 ^ 8 = 256 ips
+-----------------------------------------------------
+
+====================
+CIDR block range: 
+------------------ 
+172.31.0.0/23
+
+network portio is := 24
+host portion       = 32 -23 = 9 --> 2 ^ 8 = 512 ips
+-----------------------------------------------------
+
+1) create subnet 1
+
+subnet -1 (128)
+--------------------
+172.31.0.0/25
+172.31.0.0-127/25
+
+Network portion = 25
+Host portion   = 32 - 25 = 7 ==> 2 ^ 7 = 128
+
+
+172.31.0 is fixed
+0 - 127 = 128 ips
+
+
+2) create subnet 2
+
+subnet -2 (128)
+--------------------
+172.31.0.0/25
+172.31.0.128-255/25
+
+Network portion = 25
+Host portion   = 32 - 25 = 7 ==> 2 ^ 7 = 128
+
+
+172.31.0 is fixed
+0 - 127 = 128 ips
+
+====================== just for practice ===========
+172.31.0.0/16
+
+32-16 = 2 ^ 16 = 65536 ips
+
+
+172.31.0.0/24 - 172.31.0.0-255/24 = 256
+
+1) subnet 1
+172.31.0.0/25 - 172.31.0.0-127/25
+
+2) subnet 2
+172.31.0.128/25 - 172.31.0.128-255/25
+
+------------------
+break it into 4 subnets
+
+vpc - 172.31.0.0/24
+s1 - 172.31.0.0/26
+s2-  172.31.0.64/26
+s3 - 172.31.0.128/26
+s4 - 172.31.0.192/26
+---------------------
+Route table
+=============
+- to communicate servers within subnet
+-  once create VPC - default route table creted
+
+- we need to associate subnets with Route table
+
+internet gateway
+-----------------
+- create internet gateway
+- name MyIGw
+- attach this MyIGW to VPC-demo create
+
+Expose VPC-demo Route table to Internet
+----------------------------------------
+- to Route table
+- goto route tab
+- edit route
+- click add route
+
+0.0.0.0/0 and select Internet gatewary created MyIGW 
+( search wih igw )
+
+
+==================
+13.232.246.32
+
+13.233.4.91
+
+
 
 
 
