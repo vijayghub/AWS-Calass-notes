@@ -250,6 +250,164 @@ Expose VPC-demo Route table to Internet
 13.233.4.91
 
 
+========
+class 3
+==========
+- In order to access servers in privat subnet network
+
+1. NAT Instance
+2. Nat gateway
+--------------
+
+1. NAT Instance  demo
+=====================
+1. create VPC
+2. Create 2 subnet in NAT-VPC
+  a) Public-a
+  b) private-b
+
+3.Route table
+  a) create route pub-RT for public-a 
+  b) create route priv-RT for privat-b
+
+4.Attach subnet to Route table
+  a) attach public-a to pub-RT 
+  b) attach private-b to prib-RT
+
+5. Creat Intenet gateway - NAT-IGW
+  a) attach IGW to nat-vpc
+
+6. create a route to attach internet gateway to public-a   
+   subnet. i.e. expose to internet
+-----------------------------------------
+7. Private-b subnet is private as we are not attached to     IGW    or not 
+
+exposed to internet
+---------------------------------------------
+
+8. Create NAT Instance NAT-VPC-Server (from Community AMI)
+   - NAT instance is like normal EC2 but it be created       from Community 
+
+AMI
+   - should be create in public-a subnet
+
+9. Very imp pint is Need to disable source/destination    check for NAT 
+
+instance
+  - select NAT Instance -> actions -> Networkin ->
+    Change source/Destination check -> YEs disable
+10. Goto route table and attach NAT instance to priv-RT
+   - Route -> click edit route - add new route
+   0.0.0.0/0 - nat instance
+
+-------
+Testing
+-------
+1. Create EC2 in public-a subnet and check if we can ping    sucessfully as 
+
+it is connected internet.
+  Ec2 name - Public-a-Server
+2. Create Ec2 in private-a subnet with name Private-a-      Server
+  a) login to severer - no public ip - so we cannot logi      via SSH. then 
+
+how to login ?
+sol: First ssh to public EC2 (Public-a-Server)
+    - ping google.com
+    - create key-pair form  public ec2
+    - create file nat-keypair and paste batch11.pem key
+    - chmod 400 nat-keypair
+    ssh -i nat-keypair ec2-user@private ip of private-a-      server
+    - ping google.com
+
+
+2) Nat gateway
+------------
+===========
+- creat Nat gateway
+- select public-a subnet as we need place it in public   subnet
+- we need Elastic IP - for nat gateway - crete it
+
+- goto route table -> route -> Edit rout -> attach nat gate way
+
+Note: Please delete the EIP after practice as its charged
+
+EIP
+- 
+- first deassocaite
+- then delete
+
+-------
+Testing
+-------
+1. Create EC2 in public-a subnet and check if we can ping    sucessfully as 
+
+it is connected internet.
+  Ec2 name - Public-a-Server
+2. Create Ec2 in private-a subnet with name Private-a-      Server
+  a) login to severer - no public ip - so we cannot logi      via SSH. then 
+
+how to login ?
+sol: First ssh to public EC2 (Public-a-Server)
+    - ping google.com
+    - create key-pair form  public ec2
+    - create file nat-keypair and paste batch11.pem key
+    - chmod 400 nat-keypair
+    ssh -i nat-keypair ec2-user@private ip of private-a-      server
+    - ping google.com
+
+
+DifF b/w Nat Instnace and Nat gateway
+-------------------------------------
+=====================================
+
+Nat Intance 
+- we need create/maintain/update
+- make it higly available - need couple of nat servers
+  - need write some script - new servers
+- we are resposnible for issues/performance
+
+NAT gateway
+---------
+- AWS take care of maintenance
+- PAAS - plat form as service
+- AWS take of higly available
+- AWS resposnible for issues/performance
+
+Termination protection
+--=====================
+
+Interview Questions
+-------------------
+1.How to know the subnet is public or private subnet ??
+2. What is NAT instance and where/which subnet it should present?? public or 
+
+private ??
+
+3 How will protect your EC2 server to not getting deleted
+  a) while creatign EC2 -instance in step-3
+    enable "Protect against accidental termination"
+  b) actions -> instance setting -> change termination      protection - > 
+
+Enable
+
+4) when I launch EC2 
+instance I want to execute script, how can we do it?
+
+
+step- isnstanc configuration
+
+advanced - under user data paste below script
+
+--------------------
+#!/bin/bash
+yum install httpd -y
+echo "<h1> Welcome to Apache Server </h1>" > /var/www/html/index.html
+service httpd start
+chkconfig httpd on
+--------------------- 
+
+
+
 
 
 
