@@ -406,6 +406,90 @@ service httpd start
 chkconfig httpd on
 --------------------- 
 
+---------
+class 4
+---------
+========
+ELB- Elastic load blancing
+
+1. create 3 EC2 instances with differet configuration/color
+2. Create ELB configuration
+ - create Load Balancer
+
+Step 1: Define Load Balancer
+
+Load Balancer name: ELB-for-Apache
+Create LB Inside: default vpc	
+Create an internal load balancer: for intranet - not selected
+Enable advanced VPC configuration:	slected
+
+- Select the AZ where your EC2 present
+
+Step 2: Assign Security Groups
+
+Step 3: Configure Security Settings
+ - no changes
+
+Step 4: Configure Health Check
+
+
+Ping Protocol: HTtp
+Ping Port :80
+Ping Path :/index.html
+
+Advanced Details
+----------------
+Response Timeout :5 seconds
+Interval: 30  seconds
+Unhealthy threshold :3
+
+Healthy threshold :3
+
+Step 5: Add EC2 Instances
+
+- select servers
+
+
+-> enable Enable Cross-Zone Load Balancing
+-> Enable Connection Draining
+----------------------------- 
+1. What ever request it has it complete pending tasks witn time
+   - default 300 seconds
+2. it wont accept new request 
+
+Step 6: Add Tags
+- Name 
+step 7: Review and click create
+
+
+-> Stickiness: Disabled
+- if Stickiness is disabled all the request will shared 
+
+even/equaly
+- Stickiness - Enabled
+  - all requests goes to one server
+
+Delete Load Balancer
+------------------
+
+actions -> Delete
+
+- confirm it will delet the ELB
+=========================================
+
+Auto scalling 
+------------
+- Servers are configured based AMI
+- set Min 1 server and Max 10
+- load >=50  add 2 servers
+- laod >=70  add 1 server
+- load >=90  add 1 server
+==========
+- load <=90  remove 1 server
+- load <=70  remove 2 servers
+- load <=50  remove 1 server
+- load <=20  remove 2 servers
+---------------------------
 
 
 
